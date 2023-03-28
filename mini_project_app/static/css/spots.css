@@ -1,0 +1,39 @@
+/* Spot styling */
+.purple_color{
+    z-index: -1;
+    overflow: hidden;
+    position: absolute;
+    background: #a445b2;
+    opacity: 0.5;
+    filter: blur(150px);
+    border-radius: 200px;
+    width: 200px;
+    height: 300px;
+}
+.pink_color{
+    z-index: -1;
+    overflow: hidden;
+    position: absolute;
+    width: 200px;
+    height: 300px;
+    background: #fa4299;
+    opacity: 0.5;
+    filter: blur(150px);
+    border-radius: 200px;
+}
+
+#spot_one_pi{
+    top: 100px;
+    left: 10%;
+}
+#spot_one_pu{
+    top: 100px;
+    left: 70%;
+}
+#spot_two_pi{
+    top: 400px;
+    left: 40%;
+}
+
+
+@media screen and (max-width: 768px) {}

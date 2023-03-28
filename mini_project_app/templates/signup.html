@@ -1,0 +1,146 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title>Sign up</title>
+
+    <!-- Local styling link -->
+    <link rel="stylesheet" href="{%static 'css/index.css'%}">
+
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Akaya+Telivigala&family=Poppins:wght@300&family=Roboto:wght@300&display=swap" rel="stylesheet">
+   
+
+<style>
+    body{
+        display: block !important;
+    }
+    #pass-error{
+        margin-top: -20px;
+        border-radius: 6px;
+        text-align: center;
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #ffb8bf;
+        font-size: 16px;
+        letter-spacing: 1px;
+        color: red;
+        margin-bottom: 40px;
+        font-family: sans-serif;
+    }
+    #form_outer_container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; 
+        width: 100%;
+    }
+    
+    #login_userlogo{
+        top: 10px !important;
+    }
+    #lock_image{
+        position: absolute;
+        left: -3px;
+        top: 5px;
+    }
+    #logo{
+        margin-bottom: 30px !important;
+    }
+    #login_link{
+        color: rgb(41, 41, 187);
+    }
+    #new_user{
+        font-size: 20px;
+    }
+    #password_user_box{
+        margin-bottom: 30px;
+    }
+    #all_categories_hide{
+        display: none;
+    }
+    #form_info_box{
+        height: auto !important;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        margin-bottom: 50px;
+    }
+    #login_userlogo_email{
+        height: 30px;
+        width: 30px;
+    }
+</style>
+</head>
+
+<body>
+    
+    <div id="form_outer_container">
+    <div id="form_info_box">
+      <div id="logo"><img src="{%static 'images/logo.svg'%}" alt=""></div>
+      <p id="pass-error">{%for message in messages%}{{message}}{%endfor%}</p>
+        <form action="signup_user" method="POST" enctype="application/x-www-form-urlencoded">
+            {%csrf_token%}
+            <div class="user-box">
+                <input name="username" id="username" type="text" name="idd" required="">
+                <label>Username</label>
+                <img src="{%static 'images/User_Male.svg'%}" id="login_userlogo" alt="user" width="35" height="35" />
+            </div>
+            <div class="user-box">
+                <input name="email" id="email" type="email" name="idd" required="">
+                <label>E-Mail</label>
+                <img src="{%static 'images/Email Open.svg'%}" id="login_userlogo_email" alt="user" width="35" height="35" />
+            </div>
+            <div class="user-box">
+                <input name="pwd" id="pwd" type="password" name="idd" required="">
+                <label>Password</label>
+                <img src="{%static 'images/Lock.svg'%}" id="login_passwordlogo" alt="user" width="45" height="45" />
+                <img onclick="password_show()" src="{%static 'images/Eye.svg'%}" id="login_passwordeye" alt="user" width="27" height="27" />
+                <img onclick="password_hide()" src="{%static 'images/Closed Eye.svg'%}" id="login_passwordeye_slash" alt="user" width="27" height="27" />
+            </div>
+            
+            <div id="logindiv">
+                <input type="submit" id="login" value="Sign Up">
+            </div>
+            <div id="new_user">
+                already a user? <a id="login_link" href="login">Login</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+   <script>
+       if(document.getElementById('pass-error').innerHTML==""){
+              document.getElementById('pass-error').style.display="none";   
+       }
+       else{
+              document.getElementById('pass-error').style.display="block";
+       }
+   </script>
+    <script>
+        function password_show() {
+            document.getElementById('pwd').type = "text";
+            document.getElementById('login_passwordeye').style.display = "none";
+            document.getElementById('login_passwordeye_slash').style.display = "block";
+        }
+
+        function password_hide() {
+            document.getElementById('pwd').type = "password";
+            document.getElementById('login_passwordeye').style.display = "block";
+            document.getElementById('login_passwordeye_slash').style.display = "none";
+        }
+    </script>
+
+    
+</body>
+
+</html>

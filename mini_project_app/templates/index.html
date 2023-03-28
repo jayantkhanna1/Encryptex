@@ -1,0 +1,127 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <!-- meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title>Login</title>
+
+    <!-- Local styling link -->
+    <link rel="stylesheet" href="{%static 'css/index.css' %}">
+
+<style>
+    body{
+        display: block !important;
+    }
+    #form_outer_container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100%;
+    }
+    
+    #login_userlogo{
+        top: 10px !important;
+    }
+    #lock_image{
+        position: absolute;
+        left: -3px;
+        top: 5px;
+    }
+    
+    #logo{
+        margin-bottom: 30px !important;
+    }
+    #signup{
+        color: rgb(41, 41, 187);
+    }
+    #new_user{
+        font-size: 20px;
+    }
+    #password_user_box{
+        margin-bottom: 30px;
+    }
+    #pass-error{
+        margin-top: -20px;
+        border-radius: 6px;
+        text-align: center;
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #ffb8bf;
+        font-size: 16px;
+        letter-spacing: 1px;
+        color: red;
+        margin-bottom: 40px;
+        font-family: sans-serif;
+    }
+</style>
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Akaya+Telivigala&family=Poppins:wght@300&family=Roboto:wght@300&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="form_outer_container">
+    <div id="form_container">
+      <div id="logo"><img src="{% static 'images/logo.svg'%}" alt=""></div>
+
+      <p id="pass-error">{%for message in messages%}{{message}}{%endfor%}</p>
+
+        <form action="login_user" method="POST" enctype="application/x-www-form-urlencoded">
+            {%csrf_token%}
+            <div class="user-box">
+                <input name="email" id="email" type="email" name="idd" required="">
+                <label>Email</label>
+                <img src="{% static 'images/User_Male.svg'%}" id="login_userlogo" alt="user" width="35" height="35" />
+            </div>
+            <div class="user-box" id="password_user_box">
+                <input name="pwd" id="pwd" type="password" name="idd" required="">
+                <label>Password</label>
+                <img id="lock_image" src="{%static 'images/Lock.svg'%}"  alt="user" width="45" height="45" />
+                <img onclick="password_show()" src="{%static 'images/Eye.svg'%}" id="login_passwordeye" alt="user" width="27" height="27" />
+                <img onclick="password_hide()" src="{%static 'images/Closed Eye.svg'%}" id="login_passwordeye_slash" alt="user" width="27" height="27" />
+            </div>
+            <div id="forgot_password"><a href="forgot_password">Forgot password?</a></div>
+            <div id="logindiv">
+                <input type="submit" id="login" value="Login">
+            </div>
+            <div id="new_user">
+                new user? <a id="signup" href="signup">sign up</a>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    if(document.getElementById('pass-error').innerHTML==""){
+           document.getElementById('pass-error').style.display="none";   
+    }
+    else{
+           document.getElementById('pass-error').style.display="block";
+    }
+</script>
+    <script>
+        function password_show() {
+            document.getElementById('pwd').type = "text";
+            document.getElementById('login_passwordeye').style.display = "none";
+            document.getElementById('login_passwordeye_slash').style.display = "block";
+        }
+
+        function password_hide() {
+            document.getElementById('pwd').type = "password";
+            document.getElementById('login_passwordeye').style.display = "block";
+            document.getElementById('login_passwordeye_slash').style.display = "none";
+        }
+    </script>
+    
+</body>
+
+</html>

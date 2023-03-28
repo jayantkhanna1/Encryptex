@@ -1,0 +1,314 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title>Encryptex</title>
+
+    <!-- Local styling -->
+    <link rel="stylesheet" href="{%static 'css/home.css'%}">
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Akaya+Telivigala&family=Poppins:wght@300&family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+    <!-- For jquery and ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>    
+
+    <style>
+        
+    </style>
+</head>
+<body>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<div class="container">
+<div class="row clearfix">
+    <div class="col-lg-12">
+        <div class="card chat-app">
+            <div id="plist" class="people-list">
+
+                <!-- Search bar -->
+                <div id="searchbar_div" class="input-group">
+                    <div class="input-group-prepend">
+                        <span id="searchbar_fontawesome" class="input-group-text"><i class="fa fa-search"></i></span>
+                    </div>
+                    <input type="text" id="searchbar_input" class="form-control" placeholder="Search...">
+                </div>
+
+                <!-- New Chat here -->
+                <div id="new_chat_modal_and_button">
+                    <div onclick="newTalker()" id="new_chat_div">
+                        <span id="new_chat_fontawesome" class="input-group-text"><i class="fa fa-plus"></i></span>
+                        <p>New Chat</p>
+                    </div>
+
+                    <!-- Modal -->
+                    <div id="myModal" class="modal">
+
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <span onclick="closeModal()" class="close">&times;</span>
+                            <h2>Enter E-mail of Recepient</h2>
+                          </div>
+                          <div id="newtalker_modal_form" class="modal-body">
+                              <form action="newtalker" enctype="multipart/form-data" method="POST">
+                                  {%csrf_token%}
+                                <input type="email" placeholder="Email of Recepient" name="recepient" id="recepient"><br>
+                                <input id="modal_form_submit" type="submit" value="Chat">
+                            </form>
+                          </div>
+                          
+                        </div>
+                      
+                      </div>
+                </div>
+
+                
+                <ul id="talkers" class="list-unstyled chat-list mt-2 mb-0">
+                    <div id="talkersinner">
+                    <!-- Talkers list here -->
+                    {%for talker in talkers%}
+                    <li  onclick="setReciever('{{talker.receiver_email}}','{{talker.roomcode}}','{{talker.receiver_name}}')" id="{{talker.receiver_email}}"  class="clearfix">
+                        <img src="{%static 'images/avatar.png'%}" alt="avatar">
+                        <div class="about">
+                            <div class="name">{{talker.receiver_name}}</div>                                           
+                        </div>
+                    </li>
+                    {%endfor%}
+
+                     
+                </div>
+                </ul>
+            </div>
+            <div id="chat_screen" style="display: none;" class="chat">
+                <div class="chat-header clearfix">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                                <img src="{%static 'images/avatar.png'%}" alt="avatar">
+                            </a>
+                            <div class="chat-about">
+                                <h6 id="username" class="m-b-0">{{username}}</h6>
+                            </div>
+                        </div>
+                        <a id="logout" href="logout">Logout</a>
+                    </div>
+                </div>
+                <div class="chat-history">
+                    <ul class="m-b-0" id="chatsinner">
+                        <!-- <li class="clearfix">
+                            <div class="message my-message">Are we meeting today?</div>                                    
+                        </li>                               
+                        <li class="clearfix">
+                            <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
+                        </li> -->
+
+                        <li class="clearfix">
+                            <div class="message other-message float-right"> <a href="{{x.encrypted_img_path.url}}">Download Image </a> and ask for key from your friend then Decrypt it <a href=""> here </a> ! </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="chat-message clearfix">
+                    <form action="javascript:void(0)" onsubmit="send_message()">
+                        <div id="newmessage_div" class="input-group mb-0">
+                            <div class="input-group-prepend">
+                                <span onclick="show_image_modal()" id="show_image" class="input-group-text"><i class="fa fa-camera"></i></span>
+                                <span onclick="send_message()" id="newmessage_fontawesome" class="input-group-text"><i class="fa fa-send"></i></span>
+                            </div>
+                            <input required id="newmessage_input" type="text" class="form-control" placeholder="Enter text here...">                                    
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="chat" id="default_view">
+                Hello {{username}} <br>
+                Tap on a User to Chat 
+                <a id="logout" href="logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<input type="text" value="" id="hidden_reciever_field" style="visibility: hidden;">
+<input type="text" value="" id="hidden_roomcode_field" style="visibility: hidden;">
+
+<div id="myModal2" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span onclick="closeModal2()" class="close">&times;</span>
+        <h2>Select Image</h2>
+      </div>
+      <div id="newtalker_modal_form" class="modal-body">
+          <form action="encryptimage" enctype="multipart/form-data" method="POST">
+              {%csrf_token%}
+            <input type="file" name="image" id="image">
+            <br>
+            <input style="visibility: hidden;" type="text" id="sender_email" name="sender_email" value="{{sender_email}}">
+            <input style="visibility: hidden;" type="text" id="receiver_for_img" name="receiver_email" value="{{receiver_email}}">
+            <input style="visibility: hidden;" type="text" id="roomcode_for_img" name="roomcode" value="">
+
+
+
+              <input type="text" placeholder="Enter Key For Encryption (Save it for decryption later)" name="key" id="key"><br>
+              <input id="modal_form_submit" type="submit" value="Encrypt">
+        </form>
+      </div>
+      
+    </div>
+  
+  </div>
+
+
+<script>
+    function show_image_modal(){
+        document.getElementById('myModal2').style.display='block';
+    }
+    function closeModal2(){
+        document.getElementById('myModal2').style.display='none';
+    }
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('myModal2')) {
+            document.getElementById('myModal2').style.display = "none";
+        }
+    }
+</script>
+
+<script>
+    function newTalker(){
+        document.getElementById('myModal').style.display='block';
+    }
+    function closeModal(){
+        document.getElementById('myModal').style.display='none';
+    }
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('myModal')) {
+            document.getElementById('myModal').style.display = "none";
+        }
+    }
+</script>
+
+<script>
+    function send_message(){
+        if(document.getElementById('newmessage_input').value!="")
+        {
+            $.ajax({
+                type:'POST',
+                url:'send_message',
+                data:{
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    'sender':'{{sender_email}}',
+                    'receiver':document.getElementById('hidden_reciever_field').value,
+                    'message':document.getElementById('newmessage_input').value,
+                    'roomcode':document.getElementById('hidden_roomcode_field').value
+                },
+                success: function(data){
+                    document.getElementById('newmessage_input').value=""
+                    var temp=""
+                    if (data.message!="")
+                        temp="<li class='clearfix'><div class='message other-message float-right'>"+data.message +"</div></li>";
+                    else
+                        temp="<li class='clearfix'><div class='message other-message float-right'> <a href='"+data.encrypted_img_path.url+"'>Download Image </a> and ask for key from your friend then Decrypt it <a href='decrypt'> here </a> ! </div></li>";
+                    $("#chatsinner").append(temp);
+                }
+              });
+        } 
+    }
+</script>
+
+<script>
+    function setReciever(receiver,roomcode,receiver_name){
+        document.getElementById('hidden_reciever_field').value=receiver;
+        document.getElementById('username').innerHTML=receiver_name;
+        document.getElementById('hidden_roomcode_field').value=roomcode;
+        document.getElementById('roomcode_for_img').value=roomcode;
+        document.getElementById('receiver_for_img').value=receiver;
+        document.getElementById('default_view').style.display='none';
+        document.getElementById('chat_screen').style.display='block';
+        $("#chatsinner").empty();
+        $.ajax({
+                    type: 'POST',
+                    url : "set_all_messages",
+                    data : {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        'roomcode':roomcode
+                    },
+                    success: function(response){
+                        for (var x in response.messages)
+                        {   
+                                if((response.messages[x].sender_name).toUpperCase()==('{{username}}'.toUpperCase()) ){
+                                    if (response.messages[x].encrypted_img_path!='nill')
+                                    {
+                                        temp="<li class='clearfix'><div class='message other-message float-right'> <a download href='"+response.messages[x].encrypted_img_path+"'>Download Image </a> and ask for key from your friend then Decrypt it <a href='decrypt'> here </a> ! </div></li>";
+                                        $("#chatsinner").append(temp);
+                                    }
+                                    else{
+                                        var temp="<li class='clearfix'><div class='message other-message float-right'>"+response.messages[x].message+"</div></li>"
+                                        $("#chatsinner").append(temp);
+                                    }
+                                }
+                                else{
+                                    if (response.messages[x].encrypted_img_path!='nill')
+                                    {
+                                        temp="<li class='clearfix'><div class='message my-message'> <a href='"+response.messages[x].encrypted_img_path.url+"'>Download Image </a> and ask for key from your friend then Decrypt it <a href='/'> here </a> ! </div></li>";
+                                        $("#chatsinner").append(temp);
+                                    }
+                                    else{
+                                        var temp="<li class='clearfix'><div class='message my-message'>"+response.messages[x].message+"</div></li>"
+                                        $("#chatsinner").append(temp);
+                                    }
+                                }
+                        } 
+                    },
+                    error: function(response){
+                        for (var x in response.m_sent)
+                            alert("some error occured please contact system admin")
+                    }
+                });
+            check_for_new_messages(receiver,roomcode)
+    }
+
+
+    function check_for_new_messages(receiver,roomcode){
+        $.ajax({
+                    type: 'POST',
+                    url : "check_for_new_messages",
+                    data : {    
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        'room_code':document.getElementById('hidden_roomcode_field').value,
+                        'sender':'{{sender_email}}',
+                        
+                    },
+                    success: function(response){
+                        if (response.new_message !="na")
+                        {
+                            if (response.messages[x].encrypted_img_path!='nill')
+                                    {
+                                        temp="<li class='clearfix'><div class='message my-message'> <a href='"+response.messages[x].encrypted_img_path.url+"'>Download Image </a> and ask for key from your friend then Decrypt it <a href='decrypt'> here </a> ! </div></li>";
+                                        $("#chatsinner").append(temp);
+                                    }
+                                    else{
+                                        var temp="<li class='clearfix'><div class='message my-message'>"+response.messages[x].message+"</div></li>"
+                                        $("#chatsinner").append(temp);
+                                    }
+                        }
+                    },
+                    error: function(response){
+                        for (var x in response.m_sent)
+                            alert("some error occured please contact system admin")
+                    }
+                });
+                setTimeout(check_for_new_messages,1000)
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto';
+}
+header{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 70px;
+    padding-right: 70px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    background: -webkit-linear-gradient(left, #a445b2, #fa4299);
+}
+#logo_div img{
+    border-radius: 50%;
+    border: 1px solid white;
+}
+#logo_div{
+    width: 210px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#logo_div p{
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+}
+#right_links_header{
+    padding-top: 20px;
+}
+#right_links_header a{
+    font-weight: 600;
+    color: white;
+    text-decoration: none;
+    padding-right: 20px;
+    font-size: 20px;
+}
+.user-box {
+    position: relative;
+    margin-left: -30px;
+    width: 300px;
+  }
+  
+  .user-box input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 19px;
+    color: #7E7D7D;
+    margin-bottom: 40px;
+    border: none;
+    border-bottom: 1px solid #7E7D7D;
+    outline: none;
+    background: transparent;
+    
+  }
+  
+  .user-box label {
+    position: absolute;
+    top: 0;
+    left: 5px;
+    padding: 10px 0;
+    font-size: 19px;
+    color: #7E7D7D;
+    pointer-events: none;
+    transition: .5s;
+  }
+  .user-box input:focus~label,
+  .user-box input:valid~label {
+    top: -25px;
+    left: 5px;
+    color: #7E7D7D;
+    font-size: 16px;
+  }  
+
+  #midbody{
+      margin-top: 150px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+  }
+  #midbody h2{
+      margin-bottom: 40px;
+      font-size: 40px;
+      font-weight: 600;
+  }
+  #outer_midbody{
+      display: flex;
+  }
+  #midbody_img img{
+    width: 720px;
+    margin-top: 150px;
+  }
+  #img_to_decrypt{
+      margin-bottom: 30px;
+  }
+  #Submit_form{
+        margin-top: 30px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        color: white;
+        outline: none;
+        padding: 20px 10px;
+        font-size: 25px;
+        border-radius: 18px;
+        background:-webkit-linear-gradient(left, #a445b2, #fa4299);
+  }
